@@ -12,6 +12,8 @@ public class LibraryClient {
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              Scanner scanner = new Scanner(System.in)) {
 
+            System.out.println("Connected to the server.");
+
             while (true) {
                 System.out.println("Enter command: ");
                 String command = scanner.nextLine();
@@ -21,6 +23,7 @@ public class LibraryClient {
                 System.out.println("Server response: " + response);
             }
         } catch (IOException e) {
+            System.err.println("Client error: " + e.getMessage());
             e.printStackTrace();
         }
     }
