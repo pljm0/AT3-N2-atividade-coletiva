@@ -29,6 +29,8 @@ Clone o repositório do cliente.
 <br>Compile e execute o arquivo LibraryClient.java.
 <br>O cliente se conectará automaticamente ao servidor.
 
+*Este projeto utiliza a biblioteca Gson 2.8.8 para serialização e desserialização de objetos Java em JSON.
+
 Comandos Disponíveis
 
 LISTAR: Lista todos os livros disponíveis na biblioteca.
