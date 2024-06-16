@@ -5,16 +5,17 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class LibraryServer {
-    private static final int PORT = 12345;
+    private static final int PORT = 8080;
     private LibraryManager libraryManager;
 
     public LibraryServer() {
         libraryManager = new LibraryManager();
     }
 
+    // Método para iniciar o servidor
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Server started on port " + PORT);
+            System.out.println("Servidor iniciado na porta: " + PORT);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 new ClientHandler(clientSocket, libraryManager).start();
@@ -25,6 +26,7 @@ public class LibraryServer {
         }
     }
 
+    // Classe interna que lida com as requisições de clientes em threads separadas
     private static class ClientHandler extends Thread {
         private Socket clientSocket;
         private LibraryManager libraryManager;
@@ -41,6 +43,8 @@ public class LibraryServer {
                 System.err.println("Client handler error: " + e.getMessage());
             }
         }
+
+        // Método que executa a thread do cliente
 
         @Override
         public void run() {
@@ -61,51 +65,56 @@ public class LibraryServer {
             }
         }
 
+        // Método para processar as requisições do cliente
         private void handleRequest(String request) {
             String[] parts = request.split(" ", 2);
             String command = parts[0];
 
+            // Realiza ações com base no comando recebido
+
             switch (command) {
-                case "LIST":
+                case "LISTAR":
                     List<Book> books = libraryManager.listBooks();
                     out.println(new Gson().toJson(books));
                     break;
-                case "ADD":
+                case "ADICIONAR":
                     if (parts.length < 2) {
-                        out.println("Invalid request format for ADD command.");
+                        out.println("Formato de solicitação inválida para o comando ADICIONAR.");
                         return;
                     }
                     Book book = new Gson().fromJson(parts[1], Book.class);
                     libraryManager.addBook(book);
-                    out.println("Book added successfully.");
+                    out.println("Livro adicionado com sucesso.");
                     break;
-                case "RENT":
+                case "ALUGAR":
                     if (parts.length < 2) {
-                        out.println("Invalid request format for RENT command.");
+                        out.println("Formato de solicitação inválida para o comando ALUGAR.");
                         return;
                     }
                     if (libraryManager.rentBook(parts[1])) {
-                        out.println("Book rented successfully.");
+                        out.println("Livro alugado com sucesso.");
                     } else {
-                        out.println("Book not available.");
+                        out.println("Esse livro nao esta disponivel.");
                     }
                     break;
-                case "RETURN":
+                case "DEVOLVER":
                     if (parts.length < 2) {
-                        out.println("Invalid request format for RETURN command.");
+                        out.println("Formato de solicitação inválida para o comando DEVOLVER.");
                         return;
                     }
                     if (libraryManager.returnBook(parts[1])) {
-                        out.println("Book returned successfully.");
+                        out.println("Livro devolvido com sucesso.");
                     } else {
-                        out.println("Book not found.");
+                        out.println("Livro nao encontrado.");
                     }
                     break;
                 default:
-                    out.println("Invalid command.");
+                    out.println("Comando invalido.");
             }
         }
     }
+
+    // Método principal para iniciar o servidor
 
     public static void main(String[] args) {
         LibraryServer server = new LibraryServer();
