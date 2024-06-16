@@ -1,6 +1,8 @@
 import com.google.gson.annotations.SerializedName;
 
 public class Book {
+
+    // Anotações para especificar os nomes dos campos no JSON
     @SerializedName("titulo")
     private String title;
     @SerializedName("autor")
