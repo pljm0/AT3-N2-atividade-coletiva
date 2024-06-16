@@ -24,7 +24,7 @@ Java Development Kit (JDK) instalado
 
 Configuração do Cliente
 
-<br>Clone o repositório do cliente.
+Clone o repositório do cliente.
 <br>Abra o projeto em sua IDE Java preferida.
 <br>Compile e execute o arquivo LibraryClient.java.
 <br>O cliente se conectará automaticamente ao servidor.
